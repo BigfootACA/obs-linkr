@@ -1,0 +1,13 @@
+#pragma once
+
+#include <string_view>
+
+namespace obs_linkr::assets {
+
+inline constexpr std::string_view index_html = R"OBS_LINKR_ASSET(@OBS_LINKR_INDEX_HTML@)OBS_LINKR_ASSET";
+
+inline constexpr std::string_view app_js = R"OBS_LINKR_ASSET(@OBS_LINKR_APP_JS@)OBS_LINKR_ASSET";
+
+inline constexpr std::string_view styles_css = R"OBS_LINKR_ASSET(@OBS_LINKR_STYLES_CSS@)OBS_LINKR_ASSET";
+
+} // namespace obs_linkr::assets

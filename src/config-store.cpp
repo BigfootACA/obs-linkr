@@ -45,8 +45,8 @@ void append_page_messages(std::ostringstream &out)
 	for (size_t i = 0; i < std::size(page_texts); ++i) {
 		if (i > 0)
 			out << ",";
-		out << "\"" << page_texts[i].json_key << "\":\"" << json_escape(obs_module_text(page_texts[i].locale_key))
-		    << "\"";
+		out << "\"" << page_texts[i].json_key << "\":\""
+		    << json_escape(obs_module_text(page_texts[i].locale_key)) << "\"";
 	}
 	out << "}";
 }

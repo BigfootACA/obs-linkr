@@ -111,7 +111,8 @@ private:
 		addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 		addr.sin_port = htons(port);
 
-		if (bind(sock, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0 || listen(sock, SOMAXCONN) != 0) {
+		if (bind(sock, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0 ||
+		    listen(sock, SOMAXCONN) != 0) {
 			::close(sock);
 			return -1;
 		}
@@ -165,7 +166,9 @@ private:
 
 		const std::string content_length = header_value(request, "content-length");
 		const size_t expected =
-			content_length.empty() ? 0 : static_cast<size_t>(std::strtoull(content_length.c_str(), nullptr, 10));
+			content_length.empty()
+				? 0
+				: static_cast<size_t>(std::strtoull(content_length.c_str(), nullptr, 10));
 		while (request.body.size() < expected && raw.size() < (1024 * 1024 * 8)) {
 			const ssize_t received = recv(sock, buffer, sizeof(buffer), 0);
 			if (received <= 0)
@@ -350,7 +353,8 @@ private:
 
 		body = raw.substr(header_end + 4);
 		const auto transfer_encoding = headers.find("transfer-encoding");
-		if (transfer_encoding != headers.end() && to_lower(transfer_encoding->second).find("chunked") != std::string::npos) {
+		if (transfer_encoding != headers.end() &&
+		    to_lower(transfer_encoding->second).find("chunked") != std::string::npos) {
 			std::string decoded;
 			if (decode_chunked(body, decoded))
 				body = std::move(decoded);
@@ -370,8 +374,9 @@ private:
 
 		ParsedUrl target;
 		if (!parse_base_url(target_base, target)) {
-			send_response(sock, 400, "Bad Request", "application/json; charset=utf-8",
-				      "{\"code\":\"bad_target\",\"message\":\"Invalid or unsupported X-Linkr-Base header\"}");
+			send_response(
+				sock, 400, "Bad Request", "application/json; charset=utf-8",
+				"{\"code\":\"bad_target\",\"message\":\"Invalid or unsupported X-Linkr-Base header\"}");
 			return;
 		}
 

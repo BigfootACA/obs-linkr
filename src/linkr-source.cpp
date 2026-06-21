@@ -37,8 +37,8 @@ std::string build_page_url(const LinkrSource *ctx)
 
 	const char separator = base.find('?') == std::string::npos ? '?' : '&';
 	std::ostringstream url;
-	url << base << separator << "source=" << url_encode(ctx ? ctx->instance_id : "") << "&reload="
-	    << (ctx ? ctx->reload_counter : 0);
+	url << base << separator << "source=" << url_encode(ctx ? ctx->instance_id : "")
+	    << "&reload=" << (ctx ? ctx->reload_counter : 0);
 	return url.str();
 }
 

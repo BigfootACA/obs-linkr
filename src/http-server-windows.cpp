@@ -142,7 +142,8 @@ private:
 	{
 		size_t sent = 0;
 		while (sent < size) {
-			const int chunk = send(sock, data + sent, static_cast<int>((std::min<size_t>)(size - sent, 16384)), 0);
+			const int chunk =
+				send(sock, data + sent, static_cast<int>((std::min<size_t>)(size - sent, 16384)), 0);
 			if (chunk <= 0)
 				return false;
 			sent += static_cast<size_t>(chunk);
@@ -171,7 +172,9 @@ private:
 
 		const std::string content_length = header_value(request, "content-length");
 		const size_t expected =
-			content_length.empty() ? 0 : static_cast<size_t>(std::strtoull(content_length.c_str(), nullptr, 10));
+			content_length.empty()
+				? 0
+				: static_cast<size_t>(std::strtoull(content_length.c_str(), nullptr, 10));
 		while (request.body.size() < expected && raw.size() < (1024 * 1024 * 8)) {
 			const int received = recv(sock, buffer, sizeof(buffer), 0);
 			if (received <= 0)
@@ -276,11 +279,11 @@ private:
 				headers += widen(std::string(name) + ": " + value + "\r\n");
 		}
 
-		const BOOL sent = WinHttpSendRequest(upstream, headers.empty() ? WINHTTP_NO_ADDITIONAL_HEADERS : headers.c_str(),
-						    headers.empty() ? 0 : static_cast<DWORD>(headers.size()),
-						    request.body.empty() ? WINHTTP_NO_REQUEST_DATA : (LPVOID)request.body.data(),
-						    static_cast<DWORD>(request.body.size()),
-						    static_cast<DWORD>(request.body.size()), 0);
+		const BOOL sent = WinHttpSendRequest(
+			upstream, headers.empty() ? WINHTTP_NO_ADDITIONAL_HEADERS : headers.c_str(),
+			headers.empty() ? 0 : static_cast<DWORD>(headers.size()),
+			request.body.empty() ? WINHTTP_NO_REQUEST_DATA : (LPVOID)request.body.data(),
+			static_cast<DWORD>(request.body.size()), static_cast<DWORD>(request.body.size()), 0);
 		if (!sent || !WinHttpReceiveResponse(upstream, nullptr)) {
 			WinHttpCloseHandle(upstream);
 			WinHttpCloseHandle(connect);

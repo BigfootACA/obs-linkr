@@ -18,21 +18,21 @@ std::string obs_string(obs_data_t *settings, const char *name, const char *fallb
 
 std::string to_lower(std::string value)
 {
-	std::transform(value.begin(), value.end(), value.begin(), [](unsigned char ch) {
-		return static_cast<char>(std::tolower(ch));
-	});
+	std::transform(value.begin(), value.end(), value.begin(),
+		       [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
 	return value;
 }
 
 std::string trim(std::string value)
 {
-	auto is_space = [](unsigned char ch) { return std::isspace(ch) != 0; };
-	value.erase(value.begin(), std::find_if(value.begin(), value.end(), [&](char ch) {
-			    return !is_space(static_cast<unsigned char>(ch));
-		    }));
-	value.erase(std::find_if(value.rbegin(), value.rend(), [&](char ch) {
-			    return !is_space(static_cast<unsigned char>(ch));
-		    }).base(),
+	auto is_space = [](unsigned char ch) {
+		return std::isspace(ch) != 0;
+	};
+	value.erase(value.begin(), std::find_if(value.begin(), value.end(),
+						[&](char ch) { return !is_space(static_cast<unsigned char>(ch)); }));
+	value.erase(std::find_if(value.rbegin(), value.rend(),
+				 [&](char ch) { return !is_space(static_cast<unsigned char>(ch)); })
+			    .base(),
 		    value.end());
 	return value;
 }
